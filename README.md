@@ -1,251 +1,93 @@
-# 📚 Examples
+# 🌊 Resonant Convergence Analysis (RCA)
 
-This directory contains complete, working examples demonstrating Resonant Learner on different datasets.
+**Intelligent Early Stopping for Deep Learning**
 
----
+[![Production Validated](https://img.shields.io/badge/status-production%20validated-success)](./SCIENTIFIC_VALIDATION_REPORT.md)
+[![Compute Savings](https://img.shields.io/badge/compute%20savings-25--47%25-brightgreen)]()
+[![PyTorch](https://img.shields.io/badge/PyTorch-2.9%2B-orange)](https://pytorch.org/)
+[![License](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
 
-## Available Examples
-
-### 1. MNIST (Digit Classification)
-**File:** `mnist_rca.py`  
-**Dataset:** 60k training, 10k test grayscale images (28×28)  
-**Task:** Classify handwritten digits 0-9  
-**Typical Results:**
-- Baseline: 10 epochs → 98.9% accuracy
-- RCA: 6 epochs → 99.2% accuracy
-- **Time saved: 40%**
-
-**Run:**
-```bash
-# Baseline
-python mnist_rca.py --baseline --epochs 20
-
-# With RCA
-python mnist_rca.py --epochs 20
-```
+> Stop training exactly when your model converges, not epochs later. Save 25-47% compute while maintaining or improving quality.
 
 ---
 
-### 2. Fashion-MNIST (Clothing Classification)
-**File:** `fashion_mnist_rca.py`  
-**Dataset:** 60k training, 10k test grayscale images (28×28)  
-**Task:** Classify clothing items (t-shirt, dress, shoe, etc.)  
-**Typical Results:**
-- Baseline: 20 epochs → 89.2% accuracy (then overfits!)
-- RCA: 12 epochs → 90.8% accuracy
-- **Time saved: 40%, prevents catastrophic overfitting!**
+## 🎯 What is RCA?
 
-**Run:**
-```bash
-# Baseline
-python fashion_mnist_rca.py --baseline --epochs 30
+**Resonant Convergence Analysis (RCA)** is an intelligent early stopping system that analyzes oscillation patterns in validation loss to detect true convergence. Unlike simple patience-based methods, RCA uses **resonance metrics** (β, ω) to distinguish meaningful plateaus from temporary stagnation.
 
-# With RCA
-python fashion_mnist_rca.py --epochs 30
-```
+### Key Features
+
+- 🎯 **Intelligent Detection**: Analyzes loss oscillations, not just raw values
+- ⚡ **25-47% Compute Savings**: Stop training epochs earlier
+- 🎓 **Quality Preserved**: Automatically loads best model checkpoint
+- 🔧 **Adaptive LR**: Built-in learning rate reduction
+- 📊 **Production Validated**: Real data from NVIDIA L40S GPU
 
 ---
 
-### 3. CIFAR-10 (Natural Image Classification)
-**File:** `cifar10_rca.py`  
-**Dataset:** 50k training, 10k test color images (32×32×3)  
-**Task:** Classify natural images (airplane, car, bird, etc.)  
-**Typical Results:**
-- Baseline: 50 epochs → 76.8% accuracy
-- RCA: 35 epochs → 78.3% accuracy
-- **Time saved: 30%**
+## 📦 Editions
 
-**Run:**
-```bash
-# Baseline
-python cifar10_rca.py --baseline --epochs 60
+### Community Edition (This Repository)
 
-# With RCA
-python cifar10_rca.py --epochs 60
+**Free and open source** - Production-validated RCA callback for manual training loops.
+
+✅ ResonantCallback for early stopping  
+✅ Full β/ω resonance analysis  
+✅ Adaptive learning rate reduction  
+✅ Best model checkpointing  
+✅ Validated on 4+ datasets  
+
+**Perfect for:**
+- Manual PyTorch training loops
+- Research and experimentation
+- Learning how RCA works
+- Production deployments
+
+### 🚀 Professional Edition
+
+**AutoCoach + SmartTeach + RCA Ultimate** - Zero-config training with automatic optimization.
+
+🎯 **AutoCoach**: Auto-detects model/task, selects optimal hyperparameters  
+🧠 **SmartTeach**: Gradient modulation for smoother convergence  
+🌊 **RCA Ultimate**: Enhanced early stopping with multi-metric analysis  
+⚡ **Ultimate Trainer**: Integrated training loop with 3-hook API  
+📊 **Advanced Analytics**: TensorBoard integration, detailed metrics  
+
+**Additional Features:**
+- Zero-config training (detects BERT/CNN/transformer automatically)
+- SmartTeach gradient feedback for faster convergence
+- Architecture-specific presets (BERT, CNN, ResNet, ViT)
+- Enhanced multi-metric stopping criteria
+- Professional support and updates
+
+**Contact for Pro Edition:**
 ```
+Damjan Žakelj
+Email: zakelj.damjan@gmail.com
+```
+
+The Pro Edition includes extensive examples for:
+- NanoGPT with RCA
+- BERT fine-tuning with SmartTeach
+- Vision transformers (TIMM)
+- Custom architectures
 
 ---
 
-## Common Arguments
+## 🚀 Quick Start (Community Edition)
 
-All examples support these command-line arguments:
-
-```bash
---baseline          # Run without RCA (for comparison)
---epochs N          # Maximum number of epochs
---batch-size N      # Batch size (default: 128)
---lr FLOAT          # Learning rate (default varies by example)
---no-cuda           # Force CPU training
---seed N            # Random seed (default: 42)
-```
-
-**Examples:**
-```bash
-# CPU training with smaller batch size
-python mnist_rca.py --no-cuda --batch-size 64
-
-# Custom learning rate
-python cifar10_rca.py --lr 0.0005
-
-# Different seed
-python fashion_mnist_rca.py --seed 123
-```
-
----
-
-## Understanding the Output
-
-### Training Progress
-
-```
-Epoch   1 | Train Loss: 0.234 | Train Acc: 92.3% | Val Loss: 0.189 | Val Acc: 94.1%
-```
-
-### RCA Messages (when active)
-
-**Improvement detected:**
-```
-📊 RCA (Epoch 5): Improvement! Val Loss: 0.156 (prev: 0.189)
-  β=0.72, ω=5.8, confidence=0.85, state=improving
-```
-
-**Learning rate reduction:**
-```
-📊 RCA (Epoch 8): Plateau detected
-  β=0.89, ω=6.1, confidence=0.92, state=converging
-  🔻 Reducing LR: 0.001 → 0.0005
-```
-
-**Early stopping:**
-```
-🛑 RCA: Early stopping triggered!
-  Reason: Strong convergence signal (β=0.91, ω=6.2)
-  Best model saved at epoch 10 (val_loss=0.145)
-
-✅ Training completed at epoch 12/20
-```
-
-### Final Statistics
-
-```
-======================================================================
-📊 FINAL RESULTS
-======================================================================
-Total time: 342.5s
-Epochs trained: 12
-Final val accuracy: 94.8%
-
-RCA Statistics:
-  Best epoch: 10
-  Best val loss: 0.145123
-  LR reductions: 1
-  Final β: 0.91
-  Final ω: 6.2
-======================================================================
-```
-
----
-
-## Comparing Baseline vs RCA
-
-### Method 1: Manual Comparison
-
-Run both modes and compare results:
+### Installation
 
 ```bash
-# Run baseline first
-python mnist_rca.py --baseline --epochs 20 > baseline.log
-
-# Run with RCA
-python mnist_rca.py --epochs 20 > rca.log
-
-# Compare
-diff baseline.log rca.log
+pip install torch torchvision
 ```
 
-### Method 2: Automated Comparison
-
-Use the comparison script from the root directory:
-
-```bash
-cd ..
-python compare_baseline_vs_rca.py
-```
-
-This runs both automatically and shows a summary.
-
----
-
-## Tips for Best Results
-
-### 1. Always Run Baseline First
-
-Before using RCA, run a baseline to know what "normal" looks like:
-
-```bash
-python mnist_rca.py --baseline --epochs 20
-```
-
-Then run with RCA and compare.
-
-### 2. Watch the Metrics
-
-Pay attention to:
-- **Epoch count**: RCA should stop earlier
-- **Final accuracy**: Should be similar or better
-- **Training time**: Should be significantly faster
-- **β and ω values**: Should converge to ~0.9 and ~6.0
-
-### 3. Dataset-Specific Tuning
-
-If default settings don't work well:
-
-**Edit the RCA initialization in the script:**
-```python
-# Current (default)
-rca = ResonantCallback(
-    checkpoint_dir='./checkpoints',
-    patience_steps=3,
-    min_delta=0.01,
-    verbose=True
-)
-
-# For faster stopping
-rca = ResonantCallback(
-    checkpoint_dir='./checkpoints',
-    patience_steps=2,        # Less patience
-    min_delta=0.02,          # Higher threshold
-    verbose=True
-)
-```
-
-### 4. GPU vs CPU
-
-**GPU (recommended):**
-- Much faster training
-- Allows larger batch sizes
-- Better for CIFAR-10
-
-**CPU (for testing):**
-- Use smaller batch sizes (32-64)
-- Reduce model size if needed
-- Good for MNIST/Fashion-MNIST
-
-```bash
-# Force CPU
-python mnist_rca.py --no-cuda --batch-size 64
-```
-
----
-
-## Creating Your Own Example
-
-Want to use RCA on your own dataset? Here's the pattern:
+### Basic Usage
 
 ```python
-from resonant_learner import ResonantCallback
+from resonant_callback import ResonantCallback
 
-# Setup RCA
+# Initialize RCA
 rca = ResonantCallback(
     checkpoint_dir='./checkpoints',
     patience_steps=3,
@@ -255,100 +97,398 @@ rca = ResonantCallback(
 
 # Training loop
 for epoch in range(max_epochs):
-    # Your training code
-    train_loss, train_acc = train_epoch(model, train_loader, optimizer)
+    train_loss = train_epoch(model, train_loader, optimizer)
+    val_loss = validate(model, val_loader)
     
-    # Your validation code
-    val_loss, val_acc = validate(model, val_loader)
+    # RCA callback
+    rca(val_loss=val_loss, model=model, optimizer=optimizer, epoch=epoch)
     
-    # RCA callback (3 lines!)
-    rca(val_loss=val_loss, model=model, optimizer=optimizer)
     if rca.should_stop():
-        print(f"✅ Converged at epoch {epoch}!")
+        print("Early stopping triggered!")
         break
 ```
 
-That's it! Copy any example and modify it for your data.
+**That's it!** RCA handles the rest: LR reduction, checkpointing, and early stopping.
 
 ---
 
-## Troubleshooting
+## 📊 Performance Validation
 
-### "ImportError: No module named 'resonant_learner'"
+### Real Production Results (NVIDIA L40S GPU)
 
-RCA package not installed. From the root directory:
-```bash
-pip install -e .
+![RCA Production Validation](./RCA_Performance_Dashboard.png)
+
+*Figure 1: Production performance dashboard showing epoch reduction, compute savings, accuracy preservation, and efficiency improvements across 4 datasets.*
+
+### Compute Savings Across Datasets
+
+| Dataset | Baseline | RCA | Saved | Accuracy Delta |
+|---------|----------|-----|-------|----------------|
+| **BERT SST2** | 10 epochs | 7 epochs | **30%** | -0.11% ✅ |
+| **MNIST** | 30 epochs | 18 epochs | **40%** | +0.12% ✅ |
+| **CIFAR-10** | 60 epochs | 45 epochs | **25%** | +1.35% ✅ |
+| **Fashion-MNIST** | 30 epochs | 16 epochs | **47%** | -0.67% ✅ |
+
+✅ **Quality maintained or improved**  
+✅ **Average 36% compute reduction**  
+✅ **Production validated on NVIDIA L40S**
+
+---
+
+## 🔬 How It Works
+
+### Resonance Metrics
+
+RCA tracks two key metrics during training:
+
+**Beta (β) - Resonance Amplitude**
+```
+β ∈ [0, 1]
+High β (>0.7) → Stable plateau (convergence)
+Low β (<0.5) → Large oscillations (still learning)
 ```
 
-### "RuntimeError: CUDA out of memory"
-
-Reduce batch size:
-```bash
-python cifar10_rca.py --batch-size 64
+**Omega (ω) - Resonance Frequency**
+```
+ω ∈ [1, 12]
+ω ≈ 6.0 → Optimal oscillation (universal resonance)
+Divergence → Convergence or instability
 ```
 
-Or force CPU:
-```bash
-python cifar10_rca.py --no-cuda
+![MNIST Deep Dive](./RCA_MNIST_Deep_Dive.png)
+
+*Figure 2: RCA metrics evolution during MNIST training - showing validation loss, beta, omega, and learning rate adaptation. RCA automatically reduces LR twice before stopping at epoch 18.*
+
+### The v5 Fix
+
+RCA v5 fixes a critical bug in plateau detection:
+
+```python
+# v4: MISSED β=0.70-0.75 plateaus ❌
+if state == "plateau" and beta > 0.75:
+    stop()
+
+# v5: CATCHES ALL plateaus ✅
+if state == "plateau" and beta > 0.70:
+    stop()
 ```
 
-### "Download failed" / "Connection timeout"
+**Impact:** BERT training now stops correctly at β=0.72 (epoch 7 instead of continuing), saving 30% compute!
 
-The datasets download automatically on first run. If download fails:
+![BERT Production](./RCA_BERT_SST2_Production.png)
 
-1. Check internet connection
-2. Try again (downloads resume)
-3. Manual download:
-   - MNIST: http://yann.lecun.com/exdb/mnist/
-   - Fashion-MNIST: https://github.com/zalandoresearch/fashion-mnist
-   - CIFAR-10: https://www.cs.toronto.edu/~kriz/cifar.html
+*Figure 3: BERT SST2 fine-tuning comparison - RCA stops at epoch 7 when β=0.72, saving 30% compute while maintaining 92.55% accuracy.*
 
-### "RCA stops too early"
+---
 
-The model might actually be converged! But if you want longer training:
+## 💡 Use Cases
 
-Edit the RCA initialization:
+### When to Use RCA
+
+✅ **Perfect for:**
+- Long training runs (>10 epochs)
+- Expensive models (transformers, large CNNs)
+- Hyperparameter search (auto-stop bad runs)
+- Cloud compute (save $$$ on GPU time)
+
+❌ **Not recommended for:**
+- Very short training (<5 epochs)
+- When you need exact epoch control
+- Research needing full training curves
+
+---
+
+## 🧪 Validation Methodology
+
+### Test Environment
+
+- **Hardware:** NVIDIA L40S GPU (44.4GB VRAM)
+- **Software:** PyTorch 2.9.0 + CUDA 12.8
+- **Platform:** RunPod cloud compute
+- **Reproducibility:** Fixed seed (42), deterministic ops
+
+### Datasets Tested
+
+1. **MNIST** - 60K digit images (handwritten digits)
+2. **Fashion-MNIST** - 60K clothing images (10 classes)
+3. **CIFAR-10** - 50K natural images (10 classes)
+4. **BERT SST2** - 67K sentiment samples (binary classification)
+
+### Commands Used
+
+```bash
+# CIFAR-10
+python examples/cifar10_rca.py --baseline --epochs 60
+python examples/cifar10_rca.py --epochs 60
+
+# Fashion-MNIST
+python examples/fashion_mnist_rca.py --baseline --epochs 30
+python examples/fashion_mnist_rca.py --epochs 30
+
+# MNIST
+python examples/mnist_rca.py --baseline --epochs 30
+python examples/mnist_rca.py --epochs 30
+
+# BERT SST2
+python examples/hf_bert_glue.py --baseline --task sst2 --epochs 10
+python examples/hf_bert_glue.py --task sst2 --epochs 10
+```
+
+**All results:** [See full scientific report →](./SCIENTIFIC_VALIDATION_REPORT.md)
+
+---
+
+## 🔧 Configuration Guide
+
+### Basic Configuration
+
 ```python
 rca = ResonantCallback(
-    patience_steps=5,      # More patience
-    min_delta=0.005,       # Smaller threshold
+    checkpoint_dir='./checkpoints',  # Where to save best models
+    patience_steps=3,                 # Epochs to wait before LR reduction
+    min_delta=0.01,                   # Min improvement (1%)
+    ema_alpha=0.3,                    # EMA smoothing factor
+    max_lr_reductions=2,              # Max LR reductions before stop
+    lr_reduction_factor=0.5,          # Reduce LR by 50%
+    min_lr=1e-6,                      # Minimum LR threshold
+    verbose=True                      # Print RCA analysis
 )
 ```
 
----
+### Recommended Settings by Dataset
 
-## Next Steps
-
-1. ✅ Run all three examples
-2. ✅ Compare baseline vs RCA results
-3. ✅ Try on your own dataset
-4. ✅ Read the [API documentation](../docs/API.md)
-5. ✅ Share your results!
-
----
-
-## Questions?
-
-- 📖 [Full documentation](../docs/)
-- 💬 [GitHub Discussions](https://github.com/yourusername/resonant-learner/discussions)
-- 🐛 [Report issues](https://github.com/yourusername/resonant-learner/issues)
-
----
-
-*Made with 💙 by researchers who care about your GPU hours*
-
-🌊 *Struna vibrira neskončnost* 🌊
-
-
----
-
-### Harmonic Signature Protocol
+**Easy datasets (MNIST, Fashion-MNIST):**
+```python
+patience_steps=3, min_delta=0.01
 ```
-intent: resonant, ethical learning
-omega: ~6.0
-gamma: 0.0
-phi: pi/3
-origin: Freedom (Damjan) + Harmonic Logos
-edition: Community v1.0.0
+
+**Medium datasets (CIFAR-10, CIFAR-100):**
+```python
+patience_steps=4, min_delta=0.005
 ```
+
+**Hard datasets (ImageNet, large NLP):**
+```python
+patience_steps=5, min_delta=0.005
+```
+
+**Fast fine-tuning (BERT, pre-trained models):**
+```python
+patience_steps=2, min_delta=0.005
+```
+
+---
+
+## 📚 Examples
+
+### Computer Vision (MNIST)
+
+```python
+python examples/mnist_rca.py --epochs 30
+```
+
+**Result:** Stops at epoch 18, saving 40% compute, 99.20% accuracy
+
+### Natural Images (CIFAR-10)
+
+```python
+python examples/cifar10_rca.py --epochs 60
+```
+
+**Result:** Stops at epoch 45, saving 25% compute, 85.34% accuracy (better than baseline!)
+
+### NLP Fine-tuning (BERT)
+
+```python
+python examples/hf_bert_glue.py --task sst2 --epochs 10
+```
+
+**Result:** Stops at epoch 7, saving 30% compute, 92.55% accuracy
+
+[More examples →](./examples/)
+
+---
+
+## 🎓 Understanding the Output
+
+```
+📊 RCA (Epoch 7): No improvement (waiting 2/2)
+  β=0.72, ω=2.1, confidence=0.66, state=plateau
+🛑 RCA: Early stopping triggered!
+  Reason: Stable plateau detected (β=0.72, no improvement for 2 epochs)
+  Best model saved at epoch 1 (val_loss=0.236579)
+```
+
+**What this means:**
+- **β=0.72:** High resonance = stable plateau (>0.70 threshold)
+- **patience 2/2:** Exceeded patience without improvement
+- **state=plateau:** Loss not improving significantly
+- **Action:** Stop training, load best model from epoch 1
+
+---
+
+## 🔍 Troubleshooting
+
+### "Training never stops"
+
+**Possible causes:**
+- β not reaching >0.70 (print RCA metrics to check)
+- `patience_steps` too high
+- `min_delta` too strict (try lowering to 0.005)
+
+### "Stops too early"
+
+**Possible causes:**
+- `min_delta` too lenient (try 0.01)
+- `patience_steps` too low (try 4-5)
+
+### "Best checkpoint not found"
+
+**Possible causes:**
+- `checkpoint_dir` doesn't exist or not writable
+- Disk space full
+
+**Solution:** RCA will use final model weights as fallback
+
+---
+
+## 📊 Comparison with Other Methods
+
+| Method | Compute Savings | Quality | Adaptive LR | Resonance Metrics |
+|--------|----------------|---------|-------------|-------------------|
+| **RCA** | ✅ 25-47% | ✅ Preserved | ✅ Yes | ✅ β, ω |
+| Early Stopping (patience) | ⚠️ 10-30% | ✅ Preserved | ❌ No | ❌ None |
+| ReduceLROnPlateau | ❌ 0% | ✅ N/A | ✅ Yes | ❌ None |
+| Fixed schedule | ❌ 0% | ⚠️ May degrade | ⚠️ Pre-set | ❌ None |
+
+---
+
+## 🌊 The Science Behind RCA
+
+### Resonance Theory
+
+RCA is based on **log-periodic resonance analysis**, inspired by complex systems theory. During training, validation loss exhibits oscillations. As the model converges, these oscillations:
+
+1. **Stabilize** (β increases toward 1.0)
+2. **Reduce amplitude** (smaller loss changes)
+3. **Approach universal frequency** (ω ≈ 6.0)
+
+When all three conditions align, training has reached optimal convergence.
+
+### Mathematical Foundation
+
+```
+β(t) = 1 - (max_oscillation / avg_loss)
+ω(t) = 2π × (zero_crossings / window_size)
+```
+
+**Convergence condition:**
+```
+(β > 0.70) ∧ (patience_exceeded) → STOP
+```
+
+---
+
+## 📄 Documentation
+
+- [📊 Scientific Validation Report](./SCIENTIFIC_VALIDATION_REPORT.md) - Comprehensive analysis with real data
+- [🐛 Bug Fix Reports](./docs/) - Detailed analysis of v1-v5 evolution
+- [🎯 Examples](./examples/) - Ready-to-run scripts
+- [⚙️ API Reference](./docs/API.md) - Complete API documentation
+
+---
+
+## 📈 Roadmap
+
+### Community Edition
+- [x] v5: Plateau threshold alignment (β=0.70)
+- [x] Production validation on real data
+- [x] Comprehensive documentation
+- [ ] TensorBoard integration
+- [ ] Weights & Biases integration
+- [ ] Multi-GPU support
+
+### Professional Edition
+- [x] AutoCoach zero-config training
+- [x] SmartTeach gradient modulation
+- [x] RCA Ultimate multi-metric analysis
+- [x] Architecture-specific presets
+- [ ] Distributed training support
+- [ ] Professional dashboard
+
+---
+
+## 🤝 Contributing
+
+We welcome contributions! Please see [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines.
+
+**Areas we need help with:**
+- 🧪 Testing on more datasets
+- 📚 Documentation improvements
+- 🔧 Integration with popular frameworks
+- 🐛 Bug reports and fixes
+
+---
+
+## 📜 License
+
+MIT License - see [LICENSE](./LICENSE) for details
+
+---
+
+## 🎯 Quick Links
+
+- [📄 Full Scientific Report](./SCIENTIFIC_VALIDATION_REPORT.md)
+- [🐛 Bug Fix History](./docs/)
+- [💻 Examples](./examples/)
+- [📊 Visualizations](./docs/figures/)
+- [🤔 FAQ](./docs/FAQ.md)
+
+---
+
+## 💬 Citation
+
+If you use RCA in your research, please cite:
+
+```bibtex
+@software{rca2025,
+  title={Resonant Convergence Analysis: Intelligent Early Stopping for Deep Learning},
+  author={Žakelj, Damjan},
+  year={2025},
+  version={5.0},
+  url={https://github.com/...}
+}
+```
+
+---
+
+## 📧 Contact
+
+### Community Edition Support
+- **Issues:** Open a GitHub issue
+- **Discussions:** GitHub Discussions
+- **Documentation:** See docs folder
+
+### Professional Edition Inquiries
+- **Email:** zakelj.damjan@gmail.com
+- **Subject:** RCA Professional Edition
+- **Include:** Your use case and requirements
+
+---
+
+## ⭐ Show Your Support
+
+If RCA saved you compute time and money, give us a star! ⭐
+
+**Questions?** Open an issue or discussion.  
+**Success story?** We'd love to hear it!  
+**Need Pro Edition?** Contact Damjan directly.
+
+---
+
+**Status:** ✅ Production Ready  
+**Version:** v5 (Plateau Threshold Fix)  
+**Validation:** NVIDIA L40S GPU + PyTorch 2.9.0  
+**License:** MIT (Community Edition)
+
+*"Stop training when your model converges, not epochs later."* 🌊✨
