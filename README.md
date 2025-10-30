@@ -116,7 +116,7 @@ for epoch in range(max_epochs):
 
 ### Real Production Results (NVIDIA L40S GPU)
 
-![RCA Production Validation](./RCA_Performance_Dashboard.png)
+![RCA Production Validation](./assets/RCA_Performance_Dashboard.png)
 
 *Figure 1: Production performance dashboard showing epoch reduction, compute savings, accuracy preservation, and efficiency improvements across 4 datasets.*
 
@@ -150,7 +150,7 @@ The system internally regulates training stability using two key parameters:
 
 > Parameter ranges and fine-tuning strategies are part of the PRO implementation.
 
-![MNIST Deep Dive](./RCA_MNIST_Deep_Dive.png)
+![MNIST Deep Dive](./assets/RCA_MNIST_Deep_Dive.png)
 
 *Figure 2: RCA metrics evolution during MNIST training - showing validation loss, beta, omega, and learning rate adaptation. RCA automatically reduces LR twice before stopping at epoch 18.*
 
@@ -170,7 +170,7 @@ if state == "plateau" and beta > 0.70:
 
 **Impact:** BERT training now stops correctly at β=0.72 (epoch 7 instead of continuing), saving 30% compute!
 
-![BERT Production](./RCA_BERT_SST2_Production.png)
+![BERT Production](docs/figures/RCA_BERT_SST2_Production.png)
 
 *Figure 3: BERT SST2 fine-tuning comparison - RCA stops at epoch 7 when β=0.72, saving 30% compute while maintaining 92.55% accuracy.*
 
