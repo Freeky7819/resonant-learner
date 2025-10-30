@@ -261,6 +261,13 @@ class ResonantCallback:
                     print(f"  Reason: Strong convergence signal (β={beta:.2f}, ω={omega:.1f})")
                     print(f"  Best model saved at epoch {self.best_epoch} (val_loss={self.best_loss:.6f})")
                 self._should_stop_flag = True
+            # 🔥 NEW: If max reductions reached and still no improvement, stop
+            elif not lr_reduced and self.epochs_since_improvement >= self.patience_steps:
+                if self.verbose:
+                    print(f"🛑 RCA: Early stopping triggered!")
+                    print(f"  Reason: Max LR reductions reached, no improvement for {self.epochs_since_improvement} epochs")
+                    print(f"  Best model saved at epoch {self.best_epoch} (val_loss={self.best_loss:.6f})")
+                self._should_stop_flag = True
         
         # Check for plateau - independent of LR reduction status
         # More aggressive: stop if beta is very high even before full patience
@@ -276,6 +283,19 @@ class ResonantCallback:
                 print(f"  Reason: Stable plateau detected (β={beta:.2f}, no improvement for {self.epochs_since_improvement} epochs)")
                 print(f"  Best model saved at epoch {self.best_epoch} (val_loss={self.best_loss:.6f})")
             self._should_stop_flag = True
+        
+        # 🔥 NEW: Overfitting detection - val_loss increasing consistently
+        if len(self.loss_history) >= 3:
+            # Check if last 3 losses are increasing (overfitting signal)
+            recent_losses = self.loss_history[-3:]
+            is_increasing = all(recent_losses[i] < recent_losses[i+1] for i in range(len(recent_losses)-1))
+            
+            if is_increasing and self.epochs_since_improvement >= 2:
+                if self.verbose:
+                    print(f"🛑 RCA: Early stopping triggered!")
+                    print(f"  Reason: Overfitting detected (val_loss increasing for 3 epochs: {recent_losses[0]:.4f} → {recent_losses[-1]:.4f})")
+                    print(f"  Best model saved at epoch {self.best_epoch} (val_loss={self.best_loss:.6f})")
+                self._should_stop_flag = True
         
         # Strong convergence signal - universal resonance frequency
         # Early stop if approaching universal frequency with high beta
