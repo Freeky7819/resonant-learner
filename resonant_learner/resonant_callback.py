@@ -311,6 +311,9 @@ class ResonantCallback:
                 print(f"  Reason: Strong convergence signal at universal resonance (β={beta:.2f}, ω={omega:.1f})")
                 print(f"  Best model saved at epoch {self.best_epoch} (val_loss={self.best_loss:.6f})")
             self._should_stop_flag = True
+        
+        # Return stop signal for convenience (same as should_stop())
+        return self._should_stop_flag
     
     def should_stop(self) -> bool:
         """Check if training should stop."""
