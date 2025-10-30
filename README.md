@@ -370,18 +370,6 @@ RCA is based on **log-periodic resonance analysis**, inspired by complex systems
 
 When all three conditions align, training has reached optimal convergence.
 
-### Mathematical Foundation
-
-```
-β(t) = 1 - (max_oscillation / avg_loss)
-ω(t) = 2π × (zero_crossings / window_size)
-```
-
-**Convergence condition:**
-```
-(β > 0.70) ∧ (patience_exceeded) → STOP
-```
-
 ---
 
 ## 📄 Documentation
