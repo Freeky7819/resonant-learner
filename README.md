@@ -79,7 +79,14 @@ The Pro Edition includes extensive examples for:
 ### Installation
 
 ```bash
+pip install -e .
+
 pip install torch torchvision
+
+pip install -U pip setuptools wheel
+pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu124
+pip install tqdm numpy pandas matplotlib timm transformers datasets
+
 ```
 
 ### Basic Usage
