@@ -116,7 +116,7 @@ for epoch in range(max_epochs):
 
 ### Real Production Results (NVIDIA L40S GPU)
 
-![RCA Production Validation](./assets/RCA_Performance_Dashboard.png)
+![RCA Production Validation](./docs/figures/RCA_Performance_Dashboard.png)
 
 *Figure 1: Production performance dashboard showing epoch reduction, compute savings, accuracy preservation, and efficiency improvements across 4 datasets.*
 
@@ -150,7 +150,7 @@ The system internally regulates training stability using two key parameters:
 
 > Parameter ranges and fine-tuning strategies are part of the PRO implementation.
 
-![MNIST Deep Dive](./assets/RCA_MNIST_Deep_Dive.png)
+![MNIST Deep Dive](./docs/figures/RCA_MNIST_Deep_Dive.png)
 
 *Figure 2: RCA metrics evolution during MNIST training - showing validation loss, beta, omega, and learning rate adaptation. RCA automatically reduces LR twice before stopping at epoch 18.*
 
