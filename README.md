@@ -141,19 +141,14 @@ for epoch in range(max_epochs):
 
 RCA tracks two key metrics during training:
 
-**Beta (β) - Resonance Amplitude**
-```
-β ∈ [0, 1]
-High β (>0.7) → Stable plateau (convergence)
-Low β (<0.5) → Large oscillations (still learning)
-```
+### Resonance Parameters
 
-**Omega (ω) - Resonance Frequency**
-```
-ω ∈ [1, 12]
-ω ≈ 6.0 → Optimal oscillation (universal resonance)
-Divergence → Convergence or instability
-```
+The system internally regulates training stability using two key parameters:
+
+- **β (Resonance Amplitude):** Controls the strength of adaptive feedback — higher values yield smoother convergence, lower values allow exploratory oscillations.
+- **ω (Resonance Frequency):** Governs the oscillatory phase of learning. Empirically, models stabilize near a universal resonance regime.
+
+> Parameter ranges and fine-tuning strategies are part of the PRO implementation.
 
 ![MNIST Deep Dive](./RCA_MNIST_Deep_Dive.png)
 
