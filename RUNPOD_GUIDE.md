@@ -542,8 +542,6 @@ aria2c -x 16 -s 16 URL  # 16 parallel connections
 
 **You're ready! Go train some ImageNet! 🚀**
 
-🌊 *Struna vibrira neskončnost* 🌊
-
 **Expected time to first results:** 30 minutes (Tiny-ImageNet test)
 **Expected cost for full validation:** $30-40
 **Expected time savings with RCA:** 30-40%
