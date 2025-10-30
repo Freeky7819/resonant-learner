@@ -87,6 +87,9 @@ pip install -U pip setuptools wheel
 pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu124
 pip install tqdm numpy pandas matplotlib timm transformers datasets
 
+pytest -q
+python verify_installation.py
+
 ```
 
 ### Basic Usage
