@@ -92,7 +92,7 @@ pip install tqdm numpy pandas matplotlib timm transformers datasets
 ### Basic Usage
 
 ```python
-from resonant_callback import ResonantCallback
+from resonant_learner import ResonantCallback
 
 # Initialize RCA
 rca = ResonantCallback(
