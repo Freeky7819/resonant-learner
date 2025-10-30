@@ -226,16 +226,22 @@ class ResonantCallback:
         state = self._get_state(beta, omega)
         
         # Check for improvement
-        relative_improvement = (self.best_loss - val_loss) / (self.best_loss + 1e-8)
-        improved = relative_improvement > self.min_delta
+        if self.best_loss == float('inf'):
+            # First epoch - always consider it an improvement
+            improved = True
+            relative_improvement = 1.0
+        else:
+            relative_improvement = (self.best_loss - val_loss) / self.best_loss
+            improved = relative_improvement > self.min_delta
         
         if improved:
             self.epochs_since_improvement = 0
+            prev_best = self.best_loss  # Save before update
             if model is not None:
                 self._save_checkpoint(model, val_loss)
             
             if self.verbose:
-                print(f"📊 RCA (Epoch {self.current_epoch}): Improvement! Val Loss: {val_loss:.6f} (prev: {self.best_loss:.6f})")
+                print(f"📊 RCA (Epoch {self.current_epoch}): Improvement! Val Loss: {val_loss:.6f} (prev: {prev_best:.6f})")
                 print(f"  β={beta:.2f}, ω={omega:.1f}, confidence={confidence:.2f}, state={state}")
         else:
             self.epochs_since_improvement += 1
@@ -257,7 +263,14 @@ class ResonantCallback:
                 self._should_stop_flag = True
         
         # Check for plateau - independent of LR reduction status
-        if state == "plateau" and beta > 0.80 and self.epochs_since_improvement >= self.patience_steps:
+        # More aggressive: stop if beta is very high even before full patience
+        if state == "plateau" and beta > 0.85 and self.epochs_since_improvement >= 2:
+            if self.verbose:
+                print(f"🛑 RCA: Early stopping triggered!")
+                print(f"  Reason: Strong plateau detected (β={beta:.2f}, no improvement for {self.epochs_since_improvement} epochs)")
+                print(f"  Best model saved at epoch {self.best_epoch} (val_loss={self.best_loss:.6f})")
+            self._should_stop_flag = True
+        elif state == "plateau" and beta > 0.80 and self.epochs_since_improvement >= self.patience_steps:
             if self.verbose:
                 print(f"🛑 RCA: Early stopping triggered!")
                 print(f"  Reason: Stable plateau detected (β={beta:.2f}, no improvement for {self.epochs_since_improvement} epochs)")
@@ -265,7 +278,14 @@ class ResonantCallback:
             self._should_stop_flag = True
         
         # Strong convergence signal - universal resonance frequency
-        if beta > 0.90 and 5.8 <= omega <= 6.2 and confidence > 0.8:
+        # Early stop if approaching universal frequency with high beta
+        if beta > 0.85 and 4.5 <= omega <= 6.5 and confidence > 0.7:
+            if self.verbose:
+                print(f"🛑 RCA: Early stopping triggered!")
+                print(f"  Reason: Approaching universal resonance (β={beta:.2f}, ω={omega:.1f})")
+                print(f"  Best model saved at epoch {self.best_epoch} (val_loss={self.best_loss:.6f})")
+            self._should_stop_flag = True
+        elif beta > 0.90 and 5.8 <= omega <= 6.2 and confidence > 0.8:
             if self.verbose:
                 print(f"🛑 RCA: Early stopping triggered!")
                 print(f"  Reason: Strong convergence signal at universal resonance (β={beta:.2f}, ω={omega:.1f})")
