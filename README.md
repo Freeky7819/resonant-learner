@@ -377,7 +377,7 @@ RCA is based on **log-periodic resonance analysis**, inspired by complex systems
 
 1. **Stabilize** (β increases toward 1.0)
 2. **Reduce amplitude** (smaller loss changes)
-3. **Approach universal frequency** (ω ≈ 6.0)
+3. **Approach frequency** (ω ≈ 6.0)
 
 When all three conditions align, training has reached optimal convergence.
 
