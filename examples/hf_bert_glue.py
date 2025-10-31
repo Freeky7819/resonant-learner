@@ -272,7 +272,7 @@ def main():
         print("\n🌊 Initializing Resonant Convergence Analysis (RCA)...")
         rca = ResonantCallback(
             checkpoint_dir=args.checkpoint_dir,
-            patience_steps=2,  # Fewer patience for BERT (shorter training)
+            patience_steps=3,  # Balanced patience for BERT (accounts for validation noise)
             min_delta=0.005,
             ema_alpha=0.3,
             max_lr_reductions=2,
@@ -282,7 +282,7 @@ def main():
         )
         print("✅ RCA initialized!")
         print(f"   Checkpoint dir: {args.checkpoint_dir}")
-        print(f"   Patience: 2 epochs")
+        print(f"   Patience: 3 epochs")
         print(f"   Min improvement: 0.5%")
         print(f"   EMA alpha: 0.3")
         print(f"   Max LR reductions: 2")
