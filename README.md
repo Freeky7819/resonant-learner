@@ -240,7 +240,7 @@ python examples/hf_bert_glue.py --baseline --task sst2 --epochs 10
 python examples/hf_bert_glue.py --task sst2 --epochs 10
 ```
 
-**All results:** [See full scientific report →](./SCIENTIFIC_VALIDATION_REPORT.md)
+**All results:** [See full scientific report →](./docs/SCIENTIFIC_VALIDATION_REPORT.md)
 
 ---
 
@@ -385,7 +385,7 @@ When all three conditions align, training has reached optimal convergence.
 
 ## 📄 Documentation
 
-- [📊 Scientific Validation Report](./SCIENTIFIC_VALIDATION_REPORT.md) - Comprehensive analysis with real data
+- [📊 Scientific Validation Report](./docs/SCIENTIFIC_VALIDATION_REPORT.md) - Comprehensive analysis with real data
 - [🐛 Bug Fix Reports](./docs/) - Detailed analysis of v1-v5 evolution
 - [🎯 Examples](./examples/) - Ready-to-run scripts
 - [⚙️ API Reference](./docs/API.md) - Complete API documentation
@@ -432,7 +432,7 @@ MIT License - see [LICENSE](./LICENSE) for details
 
 ## 🎯 Quick Links
 
-- [📄 Full Scientific Report](./SCIENTIFIC_VALIDATION_REPORT.md)
+- [📄 Full Scientific Report](./docs/SCIENTIFIC_VALIDATION_REPORT.md)
 - [🐛 Bug Fix History](./docs/)
 - [💻 Examples](./examples/)
 - [📊 Visualizations](./docs/figures/)
